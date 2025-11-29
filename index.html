@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Quiet Syntax – Poetry by Charlotte Mädler</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    :root {
+      --bg: #05030b;
+      --accent-1: #ff4fd8;
+      --accent-2: #4fd8ff;
+      --accent-3: #c184ff;
+      --text-main: #f5f3ff;
+      --text-soft: #c0bed4;
+      --text-muted: #8a8799;
+      --card: rgba(10, 9, 24, 0.88);
+      --border-soft: rgba(255, 255, 255, 0.12);
+      --radius-lg: 24px;
+      --shadow-soft: 0 30px 120px rgba(0,0,0,0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text-main);
+      background:
+        radial-gradient(circle at 0% 0%, #2b1547 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #12304f 0, transparent 55%),
+        radial-gradient(circle at 60% 120%, #e02cff 0, transparent 65%),
+        var(--bg);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 6vw 40px;
+    }
+
+    a {
+      color: var(--accent-2);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .site-title {
+      font-size: clamp(28px, 4vw, 36px);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .site-sub {
+      font-size: 13px;
+      color: var(--text-soft);
+      max-width: 360px;
+    }
+
+    .orbit {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: conic-gradient(from 200deg, var(--accent-2), var(--accent-1), var(--accent-3), var(--accent-2));
+      box-shadow:
+        0 0 22px rgba(255, 79, 216, 0.9),
+        0 0 52px rgba(79, 216, 255, 0.7);
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .orbit-inner {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #050310;
+      color: var(--text-soft);
+      font-size: 11px;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Intro line */
+
+    .intro-line {
+      font-size: 13px;
+      color: var(--text-soft);
+      margin-bottom: 22px;
+      max-width: 560px;
+    }
+
+    /* Collage grid */
+
+    .grid-wrap {
+      position: relative;
+      z-index: 1;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-rows: 110px;
+      gap: 14px;
+    }
+
+    .poem-card {
+      position: relative;
+      grid-column: span 4;
+      grid-row: span 2;
+      padding: 16px 16px 18px;
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 55%),
+                  var(--card);
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.18s ease-out, box-shadow 0.18s ease-out, border-color 0.18s ease-out;
+    }
+
+    .poem-card:hover {
+      transform: translateY(-4px) rotate(-0.4deg);
+      box-shadow: 0 40px 120px rgba(0,0,0,0.95);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .poem-meta {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .poem-title {
+      font-size: 17px;
+      margin: 0 0 6px;
+    }
+
+    .poem-snippet {
+      font-size: 13px;
+      color: var(--text-soft);
+      line-height: 1.7;
+      max-width: 32em;
+    }
+
+    .poem-tag {
+      position: absolute;
+      right: 12px;
+      bottom: 10px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-muted);
+    }
+
+    /* Collage sizing variants */
+
+    .poem-card.tall {
+      grid-row: span 3;
+    }
+
+    .poem-card.wide {
+      grid-column: span 6;
+    }
+
+    .poem-card.small {
+      grid-column: span 3;
+      grid-row: span 2;
+    }
+
+    @media (max-width: 960px) {
+      .grid {
+        grid-template-columns: repeat(8, minmax(0, 1fr));
+        grid-auto-rows: 110px;
+      }
+      .poem-card {
+        grid-column: span 4;
+      }
+      .poem-card.small {
+        grid-column: span 4;
+      }
+      .poem-card.wide {
+        grid-column: span 8;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 22px 18px 32px;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .site-sub { max-width: none; }
+      .grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-auto-rows: 120px;
+      }
+      .poem-card,
+      .poem-card.small,
+      .poem-card.wide {
+        grid-column: span 4;
+      }
+      .poem-card.tall {
+        grid-row: span 3;
+      }
+    }
+
+    /* Decorative background strokes */
+
+    .stroke {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .stroke::before,
+    .stroke::after {
+      content: "";
+      position: absolute;
+      left: -20%;
+      right: -20%;
+      height: 160px;
+      border-radius: 50%;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      opacity: 0.45;
+      transform-origin: center;
+    }
+
+    .stroke::before {
+      top: 24%;
+      transform: rotate(-4deg);
+    }
+
+    .stroke::after {
+      top: 62%;
+      transform: rotate(3deg);
+    }
+
+    /* Fullscreen reader */
+
+    .reader-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 2, 16, 0.93);
+      backdrop-filter: blur(18px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      padding: 24px;
+    }
+
+    .reader-backdrop.active {
+      display: flex;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reader {
+      max-width: 720px;
+      width: 100%;
+      max-height: 90vh;
+      padding: 22px 20px 20px;
+      border-radius: 22px;
+      background: radial-gradient(circle at top left, rgba(255,255,255,0.08), transparent 55%),
+                  rgba(6,5,24,0.96);
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reader-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .reader-title {
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .reader-meta {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--text-muted);
+    }
+
+    .reader-body {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-soft);
+      white-space: pre-wrap;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .reader-close {
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 6px;
+    }
+
+    .reader-close:hover {
+      color: var(--accent-2);
+    }
+
+    footer {
+      margin-top: 32px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="stroke"></div>
+
+<header>
+  <div>
+    <div class="site-title">Quiet Syntax</div>
+    <div class="site-sub">Poems, fragments and experiments by Charlotte Mädler. For the small hours, browser tabs and train rides.</div>
+  </div>
+  <div class="orbit" aria-hidden="true">
+    <div class="orbit-inner">poem</div>
+  </div>
+</header>
+
+<p class="intro-line">
+  Some of these pieces are polished, some are just notes with good timing. Click any card to open the full poem.
+</p>
+
+<div class="grid-wrap">
+  <div class="grid">
+    <!-- Example 1 -->
+    <article class="poem-card wide"
+      data-title="debug log, 02:17"
+      data-meta="night / code"
+      data-body="the cursor blinks like a tired heartbeat\nin a room that forgot what time is.\n\nI promise myself: one last bug,\nlike all those promises before it.\n\nthe test finally passes\nand for a second\nthe world feels aligned\nlike brackets that actually close.">
+      <div class="poem-meta">night / code</div>
+      <h2 class="poem-title">debug log, 02:17</h2>
+      <p class="poem-snippet">the cursor blinks like a tired heartbeat in a room that forgot what time is. somewhere between the last failed test and the first yawn, the city goes quiet…</p>
+      <div class="poem-tag">click to read</div>
+    </article>
+
+    <!-- Example 2 -->
+    <article class="poem-card tall"
+      data-title="airport people watching"
+      data-meta="travel"
+      data-body="gate B23 is a museum\nof unfinished sentences.\n\ncoffee cools next to laptops,\nannouncements dissolve entire plans,\nand someone is crying\ninto their boarding pass.\n\nI like the way\nstrangers become stories\njust because I have time\nto look.">
+      <div class="poem-meta">travel</div>
+      <h2 class="poem-title">airport people watching</h2>
+      <p class="poem-snippet">gate B23 is a museum of unfinished sentences. coffee cools next to laptops, announcements rewrite whole weeks, and strangers become stories…</p>
+      <div class="poem-tag">gate b23</div>
+    </article>
+
+    <!-- Example 3 -->
+    <article class="poem-card small"
+      data-title="milk aisle"
+      data-meta="micro ode"
+      data-body="row five,\nfluorescent light\nand three brands\nI secretly rank\nlike tiny religions.\n\nno one suspects\nthis is where\nI am most opinionated.">
+      <div class="poem-meta">micro ode</div>
+      <h2 class="poem-title">milk aisle</h2>
+      <p class="poem-snippet">row five, fluorescent light and three brands I secretly rank like tiny religions…</p>
+      <div class="poem-tag">domestic drama</div>
+    </article>
+
+    <!-- Example 4 -->
+    <article class="poem-card"
+      data-title="learning curves"
+      data-meta="trying new things"
+      data-body="I keep collecting hobbies\nlike stray tabs,\nopen and humming.\n\nswimming, baking, bikes,\nthings I am not great at\nin very specific ways.\n\nthere is a soft joy in being\ncomfortably mediocre,\nfree from the sharp teeth\nof perfection.">
+      <div class="poem-meta">trying new things</div>
+      <h2 class="poem-title">learning curves</h2>
+      <p class="poem-snippet">I keep collecting hobbies like stray tabs, open and humming. there is a soft joy in being comfortably mediocre…</p>
+      <div class="poem-tag">practice</div>
+    </article>
+
+    <!-- Example 5 -->
+    <article class="poem-card wide"
+      data-title="cat as a service"
+      data-meta="home"
+      data-body="subscription includes:\n\n- unsolicited keyboard input\n- scheduled purring\n- nightly denial of personal space\n\nuptime: 99.9%\nerror handling: mostly claws.\n\nI file no complaints.">
+      <div class="poem-meta">home</div>
+      <h2 class="poem-title">cat as a service</h2>
+      <p class="poem-snippet">subscription includes unsolicited keyboard input, scheduled purring and aggressive uptime. SLAs are negotiated in treats…</p>
+      <div class="poem-tag">release notes</div>
+    </article>
+
+    <!-- Example 6 -->
+    <article class="poem-card small"
+      data-title="streets at 6am"
+      data-meta="quiet"
+      data-body="the city hasn&#39;t put\nits makeup on yet.\n\nbakeries yawn,\ntram tracks glitter,\nI walk through\nunrendered scenery.">
+      <div class="poem-meta">quiet</div>
+      <h2 class="poem-title">streets at 6am</h2>
+      <p class="poem-snippet">the city hasn’t put its makeup on yet. bakeries yawn, tram tracks glitter…</p>
+      <div class="poem-tag">soft start</div>
+    </article>
+
+    <!-- Add more poem-card blocks as you like -->
+  </div>
+</div>
+
+<footer>
+  <span>© <span id="year"></span> Charlotte Mädler</span>
+  <span>Back to main site · <a href="../index.html">charlotte-maedler.com</a></span>
+</footer>
+
+<!-- Full poem reader -->
+<div class="reader-backdrop" id="reader">
+  <div class="reader">
+    <div class="reader-header">
+      <div>
+        <h2 class="reader-title" id="reader-title"></h2>
+        <div class="reader-meta" id="reader-meta"></div>
+      </div>
+      <button class="reader-close" id="reader-close" aria-label="Close">×</button>
+    </div>
+    <div class="reader-body" id="reader-body"></div>
+  </div>
+</div>
+
+<script>
+  // year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // open reader
+  const cards = document.querySelectorAll(".poem-card");
+  const readerBackdrop = document.getElementById("reader");
+  const readerTitle = document.getElementById("reader-title");
+  const readerMeta = document.getElementById("reader-meta");
+  const readerBody = document.getElementById("reader-body");
+  const readerClose = document.getElementById("reader-close");
+
+  cards.forEach(card => {
+    card.addEventListener("click", () => {
+      readerTitle.textContent = card.dataset.title || "";
+      readerMeta.textContent = card.dataset.meta || "";
+      readerBody.textContent = card.dataset.body || "";
+      readerBackdrop.classList.add("active");
+    });
+  });
+
+  function closeReader() {
+    readerBackdrop.classList.remove("active");
+  }
+
+  readerClose.addEventListener("click", closeReader);
+  readerBackdrop.addEventListener("click", (e) => {
+    if (e.target === readerBackdrop) closeReader();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeReader();
+  });
+</script>
+
+</body>
+</html>
