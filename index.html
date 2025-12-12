@@ -642,8 +642,9 @@
 
 /* BIG album cover */
 .song-art{
-  width: 120px;
-  height: 120px;
+  width: 122px;
+  aspect-ratio: 1 / 1;   /* guarantees square */
+  height: auto;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 22px 60px rgba(0,0,0,0.95);
@@ -655,22 +656,24 @@
 .song-art img{
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;     /* crops nicely */
   display: block;
 }
 
 /* Title under cover */
 .song-title{
-  font-size: 16px;
-  margin: 6px 0 2px;
+  font-size: 14px;
+  margin: 4px 0 2px;
   text-align: center;
-  line-height: 1.25;
-  white-space: normal;
+  line-height: 1.2;
+  color: var(--text-main);
+
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
 
 /* Controls row */
 .song-controls{
@@ -684,7 +687,24 @@
 .song-play{
   width: 34px;
   height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(245,241,234,0.18);
+  background: rgba(255,255,255,0.06);
+  color: var(--accent-ivory);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 14px 40px rgba(0,0,0,0.85);
+  transition: transform 0.18s ease-out, border-color 0.18s ease-out, background 0.18s ease-out, box-shadow 0.18s ease-out;
 }
+
+.song-play:hover{
+  transform: translateY(-1px);
+  border-color: rgba(245,241,234,0.32);
+  background: rgba(211,58,58,0.10);
+  box-shadow: 0 0 26px rgba(211,58,58,0.35);
+}
+
 
 .song-bar{
   flex: 1;
